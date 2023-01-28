@@ -1,5 +1,5 @@
-﻿using AccountTransaction.WebAPI.Core.Configuration;
-using AccountTransaction.WebUI.Configuration.Settings;
+﻿using AccountTransaction.WebUI.Configuration.Settings;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 
 namespace AccountTransaction.WebUI.Configuration
@@ -10,6 +10,10 @@ namespace AccountTransaction.WebUI.Configuration
         {
             services.AddControllersWithViews();
 
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/var/data_protection_keys/"))
+                .SetApplicationName("DevStoreEnterprise");
+
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders =
@@ -18,7 +22,6 @@ namespace AccountTransaction.WebUI.Configuration
 
             services.Configure<ApplicationSettings>(configuration);
             services.AddRazorPages().AddRazorRuntimeCompilation();
-            services.AddDefaultHealthCheck(configuration);
         }
 
         public static void UseMvcConfiguration(this WebApplication app)
@@ -44,8 +47,6 @@ namespace AccountTransaction.WebUI.Configuration
             app.UseIdentityConfiguration();
 
             app.UseMiddleware<ExceptionMiddleware>();
-
-            app.UseDefaultHealthcheck();
 
             app.UseEndpoints(endpoints =>
             {

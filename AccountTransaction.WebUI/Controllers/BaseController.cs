@@ -1,4 +1,5 @@
 ﻿using AccountTransaction.WebUI.Configuration.Exceptions;
+using AccountTransaction.WebUI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -75,6 +76,26 @@ namespace AccountTransaction.WebUI.Controllers
             {
                 AddError(JsonConvert.SerializeObject(ex));
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        protected bool ResponseHasErrors(ResponseResult response)
+        {
+            if (response != null && response.Errors.Messages.Any())
+            {
+                foreach (var message in response.Errors.Messages)
+                {
+                    ModelState.AddModelError(string.Empty, message);
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

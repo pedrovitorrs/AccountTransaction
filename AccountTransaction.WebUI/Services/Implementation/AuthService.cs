@@ -1,14 +1,13 @@
-﻿using AccountTransaction.Core.DTO;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using AccountTransaction.WebUI.Configuration.Settings;
-using AccountTransaction.WebAPI.Core.User;
 using AccountTransaction.WebUI.Models;
 using AccountTransaction.WebUI.DTO;
 using AccountTransaction.WebUI.Services.Interface;
+using AccountTransaction.WebUI.Configuration.UserIdentity;
 
 namespace AccountTransaction.WebUI.Services.Implementation
 {

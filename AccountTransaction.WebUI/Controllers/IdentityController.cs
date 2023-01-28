@@ -34,6 +34,26 @@ namespace AccountTransaction.WebUI.Controllers
             return View(loginViewModel);
         }
 
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login(UserLoginViewModel userLogin, string returnUrl = null)
+        {
+            if (!ModelState.IsValid) return View(userLogin);
+
+            var resposta = await _authService.Login(userLogin);
+
+            if (ResponseHasErrors(resposta.ResponseResult)) 
+                return View(userLogin);
+
+            await _authService.DoLogin(resposta);
+
+            if (string.IsNullOrEmpty(returnUrl)) 
+                return RedirectToAction("Index", "Home");
+
+            return LocalRedirect(returnUrl);
+        }
+
         [HttpGet]
         [Route("register")]
         public IActionResult Register()

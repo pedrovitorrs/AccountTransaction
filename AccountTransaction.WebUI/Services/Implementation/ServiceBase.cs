@@ -1,7 +1,7 @@
-﻿using AccountTransaction.Core.DTO;
-using AccountTransaction.WebUI.Configuration.Exceptions;
+﻿using AccountTransaction.WebUI.Configuration.Exceptions;
 using System.Text.Json;
 using System.Text;
+using AccountTransaction.WebUI.DTO;
 
 namespace AccountTransaction.WebUI.Services.Implementation
 {

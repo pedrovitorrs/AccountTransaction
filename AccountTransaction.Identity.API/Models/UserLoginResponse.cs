@@ -1,7 +1,4 @@
-﻿using AccountTransaction.WebUI.Models;
-using Microsoft.AspNetCore.Mvc;
-
-namespace AccountTransaction.WebUI.DTO
+﻿namespace AccountTransaction.Identity.API.Models
 {
     public class UserLoginResponse
     {
@@ -9,6 +6,5 @@ namespace AccountTransaction.WebUI.DTO
         public string RefreshToken { get; set; }
         public double ExpiresIn { get; set; }
         public UserToken UserToken { get; set; }
-        public ResponseResult ResponseResult { get; set; }
     }
 }

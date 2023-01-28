@@ -1,13 +1,7 @@
-﻿using System;
-using System.Net.Http;
-using AccountTransaction.WebAPI.Core.User;
+﻿using AccountTransaction.WebUI.Configuration.UserIdentity;
 using AccountTransaction.WebUI.Services.Handlers;
 using AccountTransaction.WebUI.Services.Implementation;
 using AccountTransaction.WebUI.Services.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.DataAnnotations;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
 using Polly.Retry;
