@@ -5,7 +5,6 @@ services:
         image: accounttransaction/web-mvc:latest
         container_name: accounttransaction-web-mvc
         ports:
-            - 49155:443
             - 49156:80
         build:
             context: .
@@ -13,17 +12,13 @@ services:
         restart: always            
         environment:
             ASPNETCORE_ENVIRONMENT: Docker
-            ASPNETCORE_URLS: "https://+:443;http://+:80"
-            ASPNETCORE_Kestrel__Certificates__Default__Password: 9HoGMnb7Lu8NFdHBz4Vq2rtKivzMhmMXhtvuB4TZcLMmbWfFmDQCjJeLURAJ4GYe
-            ASPNETCORE_Kestrel__Certificates__Default__Path: /https/accounttransaction.academy-localhost.pfx
+            ASPNETCORE_URLS: "http://+:80"
             LC_ALL: "pt_BR.UTF-8"
             LANG: "pt_BR.UTF-8"
-            # Change the two lines above to your culture (ex pt_BR)
-        volumes: 
-            - ./certs:/https:ro
         depends_on:
             - api-identity
-            - generate-pfx
+        networks:
+            - backend
     
     accounttransaction-rabbit:
         image: rabbitmq:3-management
@@ -34,51 +29,41 @@ services:
         environment:
             RABBITMQ_DEFAULT_USER: "accounttransaction"
             RABBITMQ_DEFAULT_PASS: "accounttransaction"
+        networks:
+            - backend
 
     database-identity:
-            image: mcr.microsoft.com/mssql/server:2017-latest
-            container_name: accounttransaction-database-identity
-            ports:
-                - 1433:1433
-            expose:
-                - 1433
-            environment:
-                SA_PASSWORD: "MyDB@123"
-                ACCEPT_EULA: "Y"               
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        container_name: accounttransaction-database-identity
+        ports:
+            - 1433:1433
+        expose:
+            - 1433
+        environment:
+            SA_PASSWORD: "MyDB@123"
+            ACCEPT_EULA: "Y"
+        networks:
+            - backend
             
     api-identity:
         image: accounttransaction/api-identity:latest
         container_name: accounttransaction-api-identity
         ports:
-            - 5421:443
             - 5420:80
         build: 
             context: .
             dockerfile: ./AccountTransaction.Identity.API/Dockerfile  
         restart: always
-        volumes:
-            - ./certs:/https:ro
         environment: 
             ASPNETCORE_ENVIRONMENT: Docker
-            ASPNETCORE_URLS: https://+:443;http://+:80
-            ASPNETCORE_Kestrel__Certificates__Default__Password: 9HoGMnb7Lu8NFdHBz4Vq2rtKivzMhmMXhtvuB4TZcLMmbWfFmDQCjJeLURAJ4GYe
-            ASPNETCORE_Kestrel__Certificates__Default__Path: /https/accounttransaction.academy-localhost.pfx
+            ASPNETCORE_URLS: http://+:80
             CUSTOMCONNSTR_DefaultConnection: "Server=database-identity;Database=DSUsers;MultipleActiveResultSets=true;User Id=sa;Password=MyDB@123"
             AppSettings__DatabaseType: SqlServer
         depends_on:
             - accounttransaction-rabbit
             - database-identity
-            - generate-pfx
+        networks:
+            - backend
 
-    generate-pfx:
-        image: emberstack/openssl
-        container_name: generate-pfx
-        volumes:
-            - ./certs:/https:rw
-        command: > 
-            sh -c "[ -e "./https/accounttransaction.academy-localhost.pfx" ] && echo File Already exist || (
-                   rm -f /https/accounttransaction.academy-localhost.pfx &&
-                   openssl genrsa -out accounttransaction.rsa 2048 &&
-                   openssl req -sha256 -new -key accounttransaction.rsa -out accounttransaction.csr -subj '/CN=localhost' &&
-                   openssl x509 -req -sha256 -days 365 -in accounttransaction.csr -signkey accounttransaction.rsa -out accounttransaction.crt &&
-                   openssl pkcs12 -export -out /https/accounttransaction.academy-localhost.pfx -inkey accounttransaction.rsa -in accounttransaction.crt -password pass:9HoGMnb7Lu8NFdHBz4Vq2rtKivzMhmMXhtvuB4TZcLMmbWfFmDQCjJeLURAJ4GYe)"
+networks:
+  backend:
