@@ -1,71 +1,82 @@
 ﻿using AccountTransaction.Account.API.Data.Repository;
 using AccountTransaction.Account.API.DTO.Request;
 using AccountTransaction.Account.API.Models;
+using AccountTransaction.Account.API.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Principal;
 
 namespace AccountTransaction.Account.API.Controllers
 {
-    public class AccountController : Controller
+    [ApiController]
+    public class AccountController : BaseController
     {
-        private readonly IRepository<Conta> _repository;
+        private readonly IAccountService _accountService;
 
-        public AccountController(IRepository<Conta> repository)
+        public AccountController(IAccountService accountService)
         {
-            _repository = repository;
+            _accountService = accountService;
         }
 
-        [HttpGet("find")]
+        [HttpGet("account/findbycontaandagencia")]
         public async Task<ActionResult<Conta>> Find([FromQuery] AccountFindByIdRequestDTO accountFindByIdRequestDTO)
         {
-            var account = await _repository.Table.Where(conta => conta.Numero_Conta == accountFindByIdRequestDTO.Numero_Conta && conta.Numero_Agencia == accountFindByIdRequestDTO.Numero_Agencia).FirstOrDefaultAsync();
-            if (account == null) return NotFound();
-            return Ok(account);
+            try
+            {
+                var account = await _accountService.FindByContaAndAgencia(accountFindByIdRequestDTO);
+                if (account == null) return NotFound();
+                return Ok(account);
+            }
+            catch (Exception ex)
+            {
+                return TratarException(ex);
+            }
         }
 
-        [HttpGet("findAll")]
+        [HttpGet("account/findall")]
         public async Task<ActionResult<List<Conta>>> FindAll()
         {
-            var contas = await _repository.FindAll();
-            if (contas == null) return NotFound();
-            return Ok(contas);
-        }
-
-        [HttpPost("add")]
-        public async Task<ActionResult<AccountAddRequestDTO>> Add([FromBody] AccountAddRequestDTO accountAddRequestDTO)
-        {
-            var contaCreated = new Conta()
+            try
             {
-                Numero_Conta = accountAddRequestDTO.Numero_Conta,
-                Numero_Agencia = accountAddRequestDTO.Numero_Agencia,
-                Nome_Titular = accountAddRequestDTO.Nome_Titular,
-                Tipo_Conta = accountAddRequestDTO.Identificador_Titular.Length > 14 ? "J" : "F",
-                Identificador_Titular = accountAddRequestDTO.Identificador_Titular,
-                Ativa = 1
-            };
-            await _repository.Insert(contaCreated);
-            await _repository.CommitAsync();
-
-            if (contaCreated == null) return NotFound();
-            return Ok(accountAddRequestDTO);
+                var accounts = await _accountService.FindAll();
+                if (accounts == null) return NotFound();
+                return Ok(accounts);
+            }
+            catch (Exception ex)
+            {
+                return TratarException(ex);
+            }
         }
 
-        [HttpPut("update")]
-        public async Task<ActionResult<AccountUpdateRequestDTO>> Update([FromBody] AccountUpdateRequestDTO accountUpdateRequestDTO)
+        [HttpPost("account/add")]
+        public async Task<ActionResult<Conta>> Add([FromBody] AccountAddRequestDTO accountAddRequestDTO)
         {
-            var account = await _repository.Table.Where(conta => conta.Numero_Conta == accountUpdateRequestDTO.Numero_Conta && conta.Numero_Agencia == accountUpdateRequestDTO.Numero_Agencia).FirstOrDefaultAsync();
-            if (account == null) return NotFound();
+            try
+            {
+                var accountsCreated = await _accountService.Create(accountAddRequestDTO);
+                if (accountsCreated == null) return NotFound();
+                return Ok(accountsCreated);
+            }
+            catch (Exception ex)
+            {
+                return TratarException(ex);
+            }
+        }
 
-            account.Nome_Titular = accountUpdateRequestDTO.Nome_Titular;
-            account.Identificador_Titular = accountUpdateRequestDTO.Identificador_Titular;
-            account.Ativa = accountUpdateRequestDTO.Ativa;
-
-            var contaUpdated = await _repository.Update(account);
-            await _repository.CommitAsync();
-
-            if (contaUpdated == null) return NotFound();
-            return Ok(contaUpdated);
+        [HttpPut("account/update")]
+        public async Task<ActionResult<Conta>> Update([FromBody] AccountUpdateRequestDTO accountUpdateRequestDTO)
+        {
+            try
+            {
+                var accountUpdated = await _accountService.Update(accountUpdateRequestDTO);
+                if (accountUpdated == null) return NotFound();
+                return Ok(accountUpdated);
+            }
+            catch (Exception ex)
+            {
+                return TratarException(ex);
+            }
         }
     }
 }

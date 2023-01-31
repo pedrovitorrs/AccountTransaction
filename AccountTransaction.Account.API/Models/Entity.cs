@@ -1,5 +1,6 @@
 ﻿using System.Security.Principal;
 using System.Text.Json.Serialization;
+using AccountTransaction.Account.API.Models.Interface;
 
 namespace AccountTransaction.Account.API.Models
 {

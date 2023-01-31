@@ -2,7 +2,7 @@
 
 namespace AccountTransaction.Account.API.DTO.Request
 {
-    public class AccountFindByIdRequestDTO : BaseRequestDTO
+    public class AccountFindByIdRequestDTO : AccountBaseRequestDTO
     {
 
     }

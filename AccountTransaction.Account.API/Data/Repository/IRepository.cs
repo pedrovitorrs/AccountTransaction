@@ -1,4 +1,4 @@
-﻿using AccountTransaction.Account.API.Models;
+﻿using AccountTransaction.Account.API.Models.Interface;
 
 namespace AccountTransaction.Account.API.Data.Repository
 {
