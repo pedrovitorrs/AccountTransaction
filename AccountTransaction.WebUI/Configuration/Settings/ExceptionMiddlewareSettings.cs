@@ -64,6 +64,10 @@ namespace AccountTransaction.WebUI.Configuration.Settings
 
                 await HandleRequestExceptionAsync(httpContext, httpStatusCode);
             }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private static async Task HandleRequestExceptionAsync(HttpContext context, HttpStatusCode statusCode)

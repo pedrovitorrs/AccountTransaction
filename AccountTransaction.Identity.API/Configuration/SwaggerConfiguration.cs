@@ -10,8 +10,8 @@ namespace AccountTransaction.Identity.API.Configuration
             {
                 c.SwaggerDoc("v1", new OpenApiInfo()
                 {
-                    Title = "AccountTransaction Identity API",
-                    Description = "AccountTransaction Identity API."
+                    Title = "AccountTransaction - Identity API",
+                    Description = "AccountTransaction - Identity API."
                 });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
