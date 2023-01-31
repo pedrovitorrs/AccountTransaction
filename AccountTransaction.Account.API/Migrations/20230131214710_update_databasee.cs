@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AccountTransaction.Account.API.Migrations
 {
-    public partial class creating_relation_conta_cartao : Migration
+    public partial class update_databasee : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,8 +30,9 @@ namespace AccountTransaction.Account.API.Migrations
                 name: "Cartao",
                 columns: table => new
                 {
-                    Numero_Cartao = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Numero_Cartao = table.Column<long>(type: "bigint", nullable: false),
                     Data_Vencimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CVC = table.Column<int>(type: "int", nullable: false),
                     Numero_Conta = table.Column<int>(type: "int", nullable: false),
@@ -39,12 +40,11 @@ namespace AccountTransaction.Account.API.Migrations
                     Limite_Saldo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Limite_Saldo_Disponivel = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Ativo = table.Column<int>(type: "int", nullable: true),
-                    Bloqueado = table.Column<int>(type: "int", nullable: true),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Bloqueado = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cartao", x => x.Numero_Cartao);
+                    table.PrimaryKey("PK_Cartao", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Cartao_Conta_Numero_Conta_Numero_Agencia",
                         columns: x => new { x.Numero_Conta, x.Numero_Agencia },

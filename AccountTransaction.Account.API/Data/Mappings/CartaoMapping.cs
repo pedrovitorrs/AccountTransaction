@@ -1,6 +1,7 @@
 ﻿using AccountTransaction.Account.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
 namespace AccountTransaction.Account.API.Data.Mappings
@@ -10,7 +11,7 @@ namespace AccountTransaction.Account.API.Data.Mappings
         public void Configure(EntityTypeBuilder<Cartao> builder)
         {
             builder.ToTable("Cartao")
-                .HasKey(u => u.Numero_Cartao);
+                .HasKey(u => u.Id);
 
             builder.Property(u => u.Data_Vencimento).IsRequired();
             builder.Property(u => u.CVC).IsRequired();

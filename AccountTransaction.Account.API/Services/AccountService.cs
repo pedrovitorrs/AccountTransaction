@@ -40,7 +40,7 @@ namespace AccountTransaction.Account.API.Services
                 Nome_Titular = accountAddRequestDTO.Nome_Titular,
                 Tipo_Conta = TipoPessoa.GetTipo(accountAddRequestDTO?.Identificador_Titular),
                 Identificador_Titular = accountAddRequestDTO?.Identificador_Titular,
-                Ativa = (int?)TipoSituacaoConta.ATIVA
+                Ativa = (int?)TipoSituacaoAtividade.ATIVA
             };
 
             var accountCreated = await _repository.Insert(account);

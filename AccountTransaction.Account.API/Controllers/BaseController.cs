@@ -14,11 +14,11 @@ namespace AccountTransaction.Account.API.Controllers
         {
             if (ex.GetType() == typeof(LogicalException))
             {
-                return UnprocessableEntity(ex.Message);
+                return UnprocessableEntity(new { message = ex.Message });
             }
             else
             {
-                return NotFound(JsonConvert.SerializeObject(ex));
+                return NotFound(new { message = JsonConvert.SerializeObject(ex) });
             }
         }
     }

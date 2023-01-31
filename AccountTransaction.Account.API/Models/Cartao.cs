@@ -7,7 +7,7 @@ namespace AccountTransaction.Account.API.Models
 {
     public class Cartao : Entity
     {
-        public int Numero_Cartao { get; set; }
+        public long Numero_Cartao { get; set; }
         public DateTime Data_Vencimento { get; set; }
         public int CVC { get; set; }
         public int Numero_Conta { get; set; }

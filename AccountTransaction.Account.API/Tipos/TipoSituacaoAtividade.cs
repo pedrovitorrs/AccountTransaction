@@ -1,6 +1,6 @@
 ﻿namespace AccountTransaction.Account.API.Tipos
 {
-    public enum TipoSituacaoConta : int
+    public enum TipoSituacaoAtividade : int
     {
         INATIVA = 0,
         ATIVA = 1,

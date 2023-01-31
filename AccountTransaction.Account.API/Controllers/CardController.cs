@@ -17,7 +17,7 @@ namespace AccountTransaction.Account.API.Controllers
             _cardService = cardService;
         }
 
-        [HttpGet("card/findbycontaandagencia")]
+        [HttpGet("card/findbycardnumber")]
         public async Task<ActionResult<Cartao>> Find([FromQuery] CardBaseRequestDTO cardBaseRequestDTO)
         {
             try

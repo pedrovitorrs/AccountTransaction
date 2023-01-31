@@ -24,11 +24,11 @@ namespace AccountTransaction.Account.API.Migrations
 
             modelBuilder.Entity("AccountTransaction.Account.API.Models.Cartao", b =>
                 {
-                    b.Property<int>("Numero_Cartao")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Numero_Cartao"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int?>("Ativo")
                         .HasColumnType("int");
@@ -42,9 +42,6 @@ namespace AccountTransaction.Account.API.Migrations
                     b.Property<DateTime>("Data_Vencimento")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Limite_Saldo")
                         .HasColumnType("decimal(18,2)");
 
@@ -54,10 +51,13 @@ namespace AccountTransaction.Account.API.Migrations
                     b.Property<int>("Numero_Agencia")
                         .HasColumnType("int");
 
+                    b.Property<long>("Numero_Cartao")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("Numero_Conta")
                         .HasColumnType("int");
 
-                    b.HasKey("Numero_Cartao");
+                    b.HasKey("Id");
 
                     b.HasIndex("Numero_Conta", "Numero_Agencia");
 
