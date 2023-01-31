@@ -49,6 +49,21 @@ namespace AccountTransaction.Account.API.Controllers
             }
         }
 
+        [HttpPost("account/search")]
+        public async Task<ActionResult<Conta>> Search([FromBody] AccountSearchRequestDTO accountSearchRequestDTO)
+        {
+            try
+            {
+                var account = await _accountService.Search(accountSearchRequestDTO);
+                if (account == null) return NotFound();
+                return Ok(account);
+            }
+            catch (Exception ex)
+            {
+                return TratarException(ex);
+            }
+        }
+
         [HttpPost("account/add")]
         public async Task<ActionResult<Conta>> Add([FromBody] AccountAddRequestDTO accountAddRequestDTO)
         {

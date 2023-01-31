@@ -21,7 +21,7 @@ namespace AccountTransaction.Account.API.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Cartao>> Search(Cartao conta)
+        public Task<List<Cartao>> Search(CardSearchRequestDTO conta)
         {
             throw new NotImplementedException();
         }

@@ -6,6 +6,6 @@ namespace AccountTransaction.Account.API.DTO.Request
     {
         [StringLength(16, ErrorMessage = "O {0} deve ter pelo menos {2} e no máximo {1} caracteres.", MinimumLength = 16)]
         [CreditCard(ErrorMessage = "Cartão de crédito inválido")]
-        public int Numero_Cartao { get; set; }
+        public Nullable<int> Numero_Cartao { get; set; }
     }
 }

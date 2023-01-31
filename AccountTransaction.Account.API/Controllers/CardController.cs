@@ -1,5 +1,6 @@
 ﻿using AccountTransaction.Account.API.DTO.Request;
 using AccountTransaction.Account.API.Models;
+using AccountTransaction.Account.API.Services;
 using AccountTransaction.Account.API.Services.Interface;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,51 @@ namespace AccountTransaction.Account.API.Controllers
         public CardController(ICardService cardService)
         {
             _cardService = cardService;
+        }
+
+        [HttpGet("card/findbycontaandagencia")]
+        public async Task<ActionResult<Cartao>> Find([FromQuery] CardBaseRequestDTO cardBaseRequestDTO)
+        {
+            try
+            {
+                var card = await _cardService.FindByNumeroCartao(cardBaseRequestDTO);
+                if (card == null) return NotFound();
+                return Ok(card);
+            }
+            catch (Exception ex)
+            {
+                return TratarException(ex);
+            }
+        }
+
+        [HttpGet("card/findall")]
+        public async Task<ActionResult<List<Cartao>>> FindAll()
+        {
+            try
+            {
+                var cards = await _cardService.FindAll();
+                if (cards == null) return NotFound();
+                return Ok(cards);
+            }
+            catch (Exception ex)
+            {
+                return TratarException(ex);
+            }
+        }
+
+        [HttpPost("card/search")]
+        public async Task<ActionResult<Cartao>> Search([FromBody] CardSearchRequestDTO accountSearchRequestDTO)
+        {
+            try
+            {
+                var account = await _cardService.Search(accountSearchRequestDTO);
+                if (account == null) return NotFound();
+                return Ok(account);
+            }
+            catch (Exception ex)
+            {
+                return TratarException(ex);
+            }
         }
 
         [HttpPost("card/add")]

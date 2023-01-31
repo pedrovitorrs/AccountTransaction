@@ -4,6 +4,7 @@ using AccountTransaction.Account.API.Models;
 using AccountTransaction.Account.API.Services.Interface;
 using AccountTransaction.Account.API.Tipos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AccountTransaction.Account.API.Services
 {
@@ -11,11 +12,20 @@ namespace AccountTransaction.Account.API.Services
     {
         private readonly IRepository<Conta> _repository;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="repository"></param>
         public AccountService(IRepository<Conta> repository)
         {
             _repository = repository;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="accountAddRequestDTO"></param>
+        /// <returns></returns>
         public async Task<Conta> Create(AccountAddRequestDTO accountAddRequestDTO)
         {
             if (await FindByContaAndAgencia(accountAddRequestDTO) != null)
@@ -38,17 +48,31 @@ namespace AccountTransaction.Account.API.Services
             return accountCreated;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="accountBaseRequestDTO"></param>
+        /// <returns></returns>
         public async Task<Conta> FindByContaAndAgencia(AccountBaseRequestDTO accountBaseRequestDTO)
         {
             var account = await _repository.Table.Where(conta => conta.Numero_Conta == accountBaseRequestDTO.Numero_Conta.Value && conta.Numero_Agencia == accountBaseRequestDTO.Numero_Agencia.Value).FirstOrDefaultAsync();
             return account;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<Conta>> FindAll()
         {
             return await _repository.Table.ToListAsync();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="accountUpdateRequestDTO"></param>
+        /// <returns></returns>
         public async Task<Conta> Update(AccountUpdateRequestDTO accountUpdateRequestDTO)
         {
             var account = await FindByContaAndAgencia(accountUpdateRequestDTO);
@@ -66,9 +90,24 @@ namespace AccountTransaction.Account.API.Services
             return contaUpdated;
         }
 
-        public Task<List<Conta>> Search(Conta accountBaseRequestDTO)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<List<Conta>> Search(AccountSearchRequestDTO model)
         {
-            throw new NotImplementedException();
+            var accounts = await _repository
+                .Table.Where(a =>
+                    (string.IsNullOrEmpty(model.Tipo_Conta) || a.Tipo_Conta == model.Tipo_Conta) &&
+                    (model.Numero_Conta == null || model.Numero_Conta == a.Numero_Conta) &&
+                    (model.Numero_Agencia == null || model.Numero_Agencia == a.Numero_Agencia) &&
+                    (model.Ativa == null || model.Ativa == a.Ativa) &&
+                    (string.IsNullOrEmpty(model.Identificador_Titular) || a.Identificador_Titular.ToLower().Contains(model.Identificador_Titular.ToLower())) &&
+                    (string.IsNullOrEmpty(model.Nome_Titular) || a.Nome_Titular.ToLower().Contains(model.Nome_Titular.ToLower()))
+                )
+                .ToListAsync();
+            return accounts;
         }
     }
 }

@@ -6,10 +6,15 @@ namespace AccountTransaction.Account.API.DTO.Request
 {
     public class CardAddRequestDTO : CardBaseRequestDTO
     {
+        [Required]
         public string? Data_Vencimento { get; set; }
-        public int CVC { get; set; }
-        public int Numero_Conta { get; set; }
-        public int Numero_Agencia { get; set; }
+        [Required]
+        public Nullable<int> CVC { get; set; }
+        [Required]
+        public Nullable<int> Numero_Conta { get; set; }
+        [Required]
+        public Nullable<int> Numero_Agencia { get; set; }
+        [Required]
         public decimal Limite_Saldo { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

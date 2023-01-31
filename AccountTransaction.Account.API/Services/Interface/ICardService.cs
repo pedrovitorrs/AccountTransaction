@@ -8,7 +8,7 @@ namespace AccountTransaction.Account.API.Services.Interface
         Task<Cartao> Create(CardAddRequestDTO cardAddRequestDTO);
         Task<Cartao> FindByNumeroCartao(CardBaseRequestDTO cardBaseRequestDTO);
         Task<Cartao> FindAll();
-        Task<List<Cartao>> Search(Cartao conta);    
+        Task<List<Cartao>> Search(CardSearchRequestDTO conta);    
         Task<Cartao> Update(CardUpdateRequestDTO accountUpdateRequestDTO);
     }
 }

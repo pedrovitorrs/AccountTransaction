@@ -8,7 +8,7 @@ namespace AccountTransaction.Account.API.Services.Interface
         Task<Conta> Create(AccountAddRequestDTO accountAddRequestDTO);
         Task<Conta> FindByContaAndAgencia(AccountBaseRequestDTO accountBaseRequestDTO);
         Task<List<Conta>> FindAll();
-        Task<List<Conta>> Search(Conta conta);
+        Task<List<Conta>> Search(AccountSearchRequestDTO accountSearchRequestDTO);
         Task<Conta> Update(AccountUpdateRequestDTO accountUpdateRequestDTO);
     }
 }
