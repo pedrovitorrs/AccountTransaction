@@ -5,7 +5,7 @@ services:
         image: accounttransaction/web-mvc:latest
         container_name: accounttransaction-web-mvc
         ports:
-            - 49156:80
+            - 5400:80
         build:
             context: .
             dockerfile: ./AccountTransaction.WebUI/Dockerfile
@@ -95,6 +95,39 @@ services:
         depends_on:
             - accounttransaction-rabbit
             - database-account
+        networks:
+            - backend
+
+    database-transaction:
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        container_name: accounttransaction-database-transaction
+        ports:
+            - 1435:1433
+        expose:
+            - 1435
+        environment:
+            SA_PASSWORD: "MyDB@123"
+            ACCEPT_EULA: "Y"
+        networks:
+            - backend
+
+    api-transaction:
+        image: accounttransaction/api-transaction:latest
+        container_name: accounttransaction-api-transaction
+        ports:
+            - 5480:80
+        build: 
+            context: .
+            dockerfile: ./AccountTransaction.Transaction.API/Dockerfile  
+        restart: always
+        environment: 
+            ASPNETCORE_ENVIRONMENT: Docker
+            ASPNETCORE_URLS: http://+:80
+            CUSTOMCONNSTR_DefaultConnection: "Server=accounttransaction-database-account;Database=DSTransaction;MultipleActiveResultSets=true;User Id=sa;Password=MyDB@123"
+            AppSettings__DatabaseType: SqlServer
+        depends_on:
+            - accounttransaction-rabbit
+            - database-transaction
         networks:
             - backend
 networks:
