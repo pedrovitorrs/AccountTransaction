@@ -1,4 +1,5 @@
 ﻿using AccountTransaction.Account.API.Models;
+using AccountTransaction.Commom.Core.Attributes;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
@@ -7,6 +8,7 @@ namespace AccountTransaction.Account.API.DTO.Request
     public class CardAddRequestDTO : CardBaseRequestDTO, IValidatableObject
     {
         [Required]
+        [CreditCardExpired(ErrorMessage = "Cartão de crédito expirado")]
         public string? Data_Vencimento { get; set; }
         [Required]
         [MaxLength(length: 3)]

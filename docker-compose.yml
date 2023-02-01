@@ -123,7 +123,7 @@ services:
         environment: 
             ASPNETCORE_ENVIRONMENT: Docker
             ASPNETCORE_URLS: http://+:80
-            CUSTOMCONNSTR_DefaultConnection: "Server=accounttransaction-database-account;Database=DSTransaction;MultipleActiveResultSets=true;User Id=sa;Password=MyDB@123"
+            CUSTOMCONNSTR_DefaultConnection: "Server=accounttransaction-database-transaction;Database=DSTransaction;MultipleActiveResultSets=true;User Id=sa;Password=MyDB@123"
             AppSettings__DatabaseType: SqlServer
         depends_on:
             - accounttransaction-rabbit

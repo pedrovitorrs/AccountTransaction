@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-namespace GeekShopping.OrderAPI.MessageConsumer
+namespace AccountTransaction.Account.API.MessageConsumer
 {
     public class RabbitMQTransactionConsumer : BackgroundService
     {
