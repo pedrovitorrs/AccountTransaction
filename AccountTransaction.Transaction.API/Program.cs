@@ -1,6 +1,5 @@
-using AccountTransaction.Account.API.Configuration;
-using AccountTransaction.Account.API.Configuration.Identity;
-using Microsoft.Extensions.Configuration;
+using AccountTransaction.Transaction.API.Configuration;
+using AccountTransaction.Transaction.API.Configuration.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
