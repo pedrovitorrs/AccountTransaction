@@ -1,5 +1,6 @@
 ﻿using AccountTransaction.Account.API.DTO.Request;
 using AccountTransaction.Account.API.Models;
+using AccountTransaction.Commom.Core.PagedList;
 
 namespace AccountTransaction.Account.API.Services.Interface
 {
@@ -7,8 +8,7 @@ namespace AccountTransaction.Account.API.Services.Interface
     {
         Task<Conta> Create(AccountAddRequestDTO accountAddRequestDTO);
         Task<Conta> FindByContaAndAgencia(AccountBaseRequestDTO accountBaseRequestDTO);
-        Task<List<Conta>> FindAll();
-        Task<List<Conta>> Search(AccountSearchRequestDTO accountSearchRequestDTO);
+        Task<PagedResult<Conta>> FindAll(AccountFindAllRequestDTO accountSearchRequestDTO, int pagesize, int page);
         Task<Conta> Update(AccountUpdateRequestDTO accountUpdateRequestDTO);
     }
 }

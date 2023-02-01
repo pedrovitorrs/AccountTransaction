@@ -3,8 +3,13 @@ using AccountTransaction.Account.API.DTO.Request;
 using AccountTransaction.Account.API.Models;
 using AccountTransaction.Account.API.Services.Interface;
 using AccountTransaction.Account.API.Tipos;
+using AccountTransaction.Commom.Core.PagedList;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Polly;
+using Polly.Caching;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace AccountTransaction.Account.API.Services
 {
@@ -55,7 +60,7 @@ namespace AccountTransaction.Account.API.Services
         /// <returns></returns>
         public async Task<Conta> FindByContaAndAgencia(AccountBaseRequestDTO accountBaseRequestDTO)
         {
-            var account = await _repository.Table.Where(conta => conta.Numero_Conta == accountBaseRequestDTO.Numero_Conta.Value && conta.Numero_Agencia == accountBaseRequestDTO.Numero_Agencia.Value).FirstOrDefaultAsync();
+            var account = await _repository.Table.Include(c => c.Cartoes).Where(conta => conta.Numero_Conta == accountBaseRequestDTO.Numero_Conta.Value && conta.Numero_Agencia == accountBaseRequestDTO.Numero_Agencia.Value).FirstOrDefaultAsync();
             return account;
         }
 
@@ -63,9 +68,32 @@ namespace AccountTransaction.Account.API.Services
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Conta>> FindAll()
+        public async Task<PagedResult<Conta>> FindAll(AccountFindAllRequestDTO model, int pagesize, int pageindex)
         {
-            return await _repository.Table.ToListAsync();
+            var accountsQuery = _repository.Table.AsQueryable();
+
+            var accounts = await accountsQuery
+                .Include(c => c.Cartoes)
+                .Where(a =>
+                    (string.IsNullOrEmpty(model.Tipo_Conta) || a.Tipo_Conta == model.Tipo_Conta) &&
+                    (model.Numero_Conta == null || model.Numero_Conta == a.Numero_Conta) &&
+                    (model.Numero_Agencia == null || model.Numero_Agencia == a.Numero_Agencia) &&
+                    (model.Ativa == null || model.Ativa == a.Ativa) &&
+                    (string.IsNullOrEmpty(model.Identificador_Titular) || a.Identificador_Titular.ToLower().Contains(model.Identificador_Titular.ToLower())) &&
+                    (string.IsNullOrEmpty(model.Nome_Titular) || a.Nome_Titular.ToLower().Contains(model.Nome_Titular.ToLower()))
+                )
+                .OrderBy(x => x.Numero_Conta)
+                .Skip(pagesize * (pageindex - 1))
+                .Take(pagesize)
+                .ToListAsync();
+
+            return new PagedResult<Conta>()
+            {
+                List = accounts,
+                TotalResults = accounts.Count(),
+                PageIndex = pageindex,
+                PageSize = pagesize
+            };
         }
 
         /// <summary>
@@ -88,26 +116,6 @@ namespace AccountTransaction.Account.API.Services
             var contaUpdated = await _repository.Update(account);
             await _repository.CommitAsync();
             return contaUpdated;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public async Task<List<Conta>> Search(AccountSearchRequestDTO model)
-        {
-            var accounts = await _repository
-                .Table.Where(a =>
-                    (string.IsNullOrEmpty(model.Tipo_Conta) || a.Tipo_Conta == model.Tipo_Conta) &&
-                    (model.Numero_Conta == null || model.Numero_Conta == a.Numero_Conta) &&
-                    (model.Numero_Agencia == null || model.Numero_Agencia == a.Numero_Agencia) &&
-                    (model.Ativa == null || model.Ativa == a.Ativa) &&
-                    (string.IsNullOrEmpty(model.Identificador_Titular) || a.Identificador_Titular.ToLower().Contains(model.Identificador_Titular.ToLower())) &&
-                    (string.IsNullOrEmpty(model.Nome_Titular) || a.Nome_Titular.ToLower().Contains(model.Nome_Titular.ToLower()))
-                )
-                .ToListAsync();
-            return accounts;
         }
     }
 }

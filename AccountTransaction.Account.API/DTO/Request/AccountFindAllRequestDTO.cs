@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace AccountTransaction.Account.API.DTO.Request
 {
-    public class AccountSearchRequestDTO
+    public class AccountFindAllRequestDTO
     {
         public Nullable<int> Numero_Conta { get; set; }
         public Nullable<int> Numero_Agencia { get; set; }

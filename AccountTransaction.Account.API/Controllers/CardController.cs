@@ -17,8 +17,8 @@ namespace AccountTransaction.Account.API.Controllers
             _cardService = cardService;
         }
 
-        [HttpGet("card/findbycardnumber")]
-        public async Task<ActionResult<Cartao>> Find([FromQuery] CardBaseRequestDTO cardBaseRequestDTO)
+        [HttpGet("cards/{numero_cartao?}")]
+        public async Task<ActionResult<Cartao>> Find(CardBaseRequestDTO cardBaseRequestDTO)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace AccountTransaction.Account.API.Controllers
             }
         }
 
-        [HttpGet("card/findall")]
+        [HttpGet("cards")]
         public async Task<ActionResult<List<Cartao>>> FindAll()
         {
             try
@@ -47,22 +47,7 @@ namespace AccountTransaction.Account.API.Controllers
             }
         }
 
-        [HttpPost("card/search")]
-        public async Task<ActionResult<Cartao>> Search([FromBody] CardSearchRequestDTO accountSearchRequestDTO)
-        {
-            try
-            {
-                var account = await _cardService.Search(accountSearchRequestDTO);
-                if (account == null) return NotFound();
-                return Ok(account);
-            }
-            catch (Exception ex)
-            {
-                return TratarException(ex);
-            }
-        }
-
-        [HttpPost("card/add")]
+        [HttpPost("cards")]
         public async Task<ActionResult<Cartao>> Add([FromBody] CardAddRequestDTO cardAddRequestDTO)
         {
             try
@@ -77,7 +62,7 @@ namespace AccountTransaction.Account.API.Controllers
             }
         }
 
-        [HttpPut("card/update")]
+        [HttpPut("cards")]
         public async Task<ActionResult<Cartao>> Update([FromBody] CardUpdateRequestDTO accountUpdateRequestDTO)
         {
             try

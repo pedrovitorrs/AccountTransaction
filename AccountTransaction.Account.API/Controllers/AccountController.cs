@@ -2,6 +2,7 @@
 using AccountTransaction.Account.API.DTO.Request;
 using AccountTransaction.Account.API.Models;
 using AccountTransaction.Account.API.Services.Interface;
+using AccountTransaction.Commom.Core.PagedList;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +20,8 @@ namespace AccountTransaction.Account.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet("account/findbycontaandagencia")]
-        public async Task<ActionResult<Conta>> Find([FromQuery] AccountFindByIdRequestDTO accountFindByIdRequestDTO)
+        [HttpGet("accounts/{numero_agencia?}/{numero_conta?}")]
+        public async Task<ActionResult<Conta>> FindByContaAndAgencia(AccountFindByContaAndAgenciaRequestDTO accountFindByIdRequestDTO)
         {
             try
             {
@@ -34,12 +35,12 @@ namespace AccountTransaction.Account.API.Controllers
             }
         }
 
-        [HttpGet("account/findall")]
-        public async Task<ActionResult<List<Conta>>> FindAll()
+        [HttpGet("accounts")]
+        public async Task<ActionResult<PagedResult<Conta>>> FindAll([FromQuery] AccountFindAllRequestDTO accountSearchRequestDTO, [FromQuery] int pagesize = 10, [FromQuery] int page = 1)
         {
             try
             {
-                var accounts = await _accountService.FindAll();
+                var accounts = await _accountService.FindAll(accountSearchRequestDTO, pagesize, page);
                 if (accounts == null) return NotFound();
                 return Ok(accounts);
             }
@@ -49,23 +50,8 @@ namespace AccountTransaction.Account.API.Controllers
             }
         }
 
-        [HttpPost("account/search")]
-        public async Task<ActionResult<Conta>> Search([FromBody] AccountSearchRequestDTO accountSearchRequestDTO)
-        {
-            try
-            {
-                var account = await _accountService.Search(accountSearchRequestDTO);
-                if (account == null) return NotFound();
-                return Ok(account);
-            }
-            catch (Exception ex)
-            {
-                return TratarException(ex);
-            }
-        }
-
-        [HttpPost("account/add")]
-        public async Task<ActionResult<Conta>> Add([FromBody] AccountAddRequestDTO accountAddRequestDTO)
+        [HttpPost("accounts")]
+        public async Task<ActionResult<Conta>> Create([FromBody] AccountAddRequestDTO accountAddRequestDTO)
         {
             try
             {
@@ -79,7 +65,7 @@ namespace AccountTransaction.Account.API.Controllers
             }
         }
 
-        [HttpPut("account/update")]
+        [HttpPut("accounts")]
         public async Task<ActionResult<Conta>> Update([FromBody] AccountUpdateRequestDTO accountUpdateRequestDTO)
         {
             try

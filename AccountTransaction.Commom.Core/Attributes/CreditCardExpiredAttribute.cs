@@ -21,7 +21,7 @@ namespace AccountTransaction.Commom.Core.Attributes
             if (int.TryParse(mes, out var month) &&
                 int.TryParse(ano, out var year))
             {
-                var d = new DateTime(year, month, 1);
+                var d = new DateTime(year, month, DateTime.DaysInMonth(year, month));
                 return d > DateTime.UtcNow;
             }
 
