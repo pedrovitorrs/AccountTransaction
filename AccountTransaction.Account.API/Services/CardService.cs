@@ -86,9 +86,22 @@ namespace AccountTransaction.Account.API.Services
             return card;
         }
 
-        public Task<Cartao> Update(CardUpdateRequestDTO accountUpdateRequestDTO)
+        public async Task<Cartao> Update(CardUpdateRequestDTO accountUpdateRequestDTO)
         {
-            throw new NotImplementedException();
+            var card = await FindByNumeroCartao(accountUpdateRequestDTO);
+            if (card == null)
+            {
+                LogicalException("Conta e agência não encontrados.");
+            }
+
+            card.Data_Vencimento = string.IsNullOrEmpty(accountUpdateRequestDTO.Data_Vencimento) ? new DateParse(accountUpdateRequestDTO.Data_Vencimento).DataParseada : card.Data_Vencimento;
+            card.Limite_Saldo = accountUpdateRequestDTO.Limite_Saldo ?? card.Limite_Saldo;
+            card.Ativo = accountUpdateRequestDTO.Ativo ?? card.Ativo;
+            card.Bloqueado = accountUpdateRequestDTO.Ativo == (int)TipoSituacaoAtividade.ATIVA ? (int)TipoSituacaoAtividade.INATIVA : (int)TipoSituacaoAtividade.ATIVA;
+
+            var contaUpdated = await _repository.Update(card);
+            await _repository.CommitAsync();
+            return contaUpdated;
         }
     }
 }

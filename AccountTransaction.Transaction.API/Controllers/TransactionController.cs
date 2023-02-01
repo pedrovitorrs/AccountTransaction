@@ -1,4 +1,5 @@
-﻿using AccountTransaction.MessageBus;
+﻿using AccountTransaction.Commom.Core.PagedList;
+using AccountTransaction.MessageBus;
 using AccountTransaction.MessageBus.RabbitMQSender;
 using AccountTransaction.Transaction.API.DTO.Request;
 using AccountTransaction.Transaction.API.Models;
@@ -19,12 +20,12 @@ namespace AccountTransaction.Transaction.API.Controllers
             _rabbitMessageSender = rabbitMessageSender;
         }
 
-        [HttpGet("transaction/findbyid")]
-        public async Task<ActionResult<Transacao>> Find([FromQuery] TransactionBaseRequestDTO accountFindByIdRequestDTO)
+        [HttpGet("transactions/{id?}")]
+        public async Task<ActionResult<Transacao>> Find(TransactionBaseRequestDTO accountFindByIdRequestDTO)
         {
             try
             {
-                var account = await _transactionService.FindByContaAndAgencia(accountFindByIdRequestDTO);
+                var account = await _transactionService.FindById(accountFindByIdRequestDTO.Id);
                 if (account == null) return NotFound();
                 return Ok(account);
             }
@@ -34,12 +35,12 @@ namespace AccountTransaction.Transaction.API.Controllers
             }
         }
 
-        [HttpGet("transaction/findall")]
-        public async Task<ActionResult<List<Transacao>>> FindAll()
+        [HttpGet("transactions")]
+        public async Task<ActionResult<PagedResult<Transacao>>> FindAll([FromQuery] TransactionFindAllRequestDTO transactionFindAllRequestDTO, [FromQuery] int pagesize = 10, [FromQuery] int page = 1)
         {
             try
             {
-                var accounts = await _transactionService.FindAll();
+                var accounts = await _transactionService.FindAll(transactionFindAllRequestDTO, pagesize, page);
                 if (accounts == null) return NotFound();
                 return Ok(accounts);
             }
@@ -49,7 +50,7 @@ namespace AccountTransaction.Transaction.API.Controllers
             }
         }
 
-        [HttpPost("transaction/add")]
+        [HttpPost("transactions")]
         public async Task<ActionResult<Transacao>> Add([FromBody] TransactionAddRequestDTO accountAddRequestDTO)
         {
             try
@@ -63,14 +64,13 @@ namespace AccountTransaction.Transaction.API.Controllers
             }
         }
 
-        [HttpPut("transaction/update")]
-        public async Task<ActionResult<Transacao>> Update([FromBody] TransactionUpdateRequestDTO accountUpdateRequestDTO)
+        [HttpPut("transactions")]
+        public async Task<ActionResult<Transacao>> Update([FromBody] TransactionAddRequestDTO accountUpdateRequestDTO)
         {
             try
             {
-                var accountUpdated = await _transactionService.Update(accountUpdateRequestDTO);
-                if (accountUpdated == null) return NotFound();
-                return Ok(accountUpdated);
+                _rabbitMessageSender.SendMessage<TransactionAddRequestDTO>(accountUpdateRequestDTO, Routing_Keys.TRANSACTION_CREATED);
+                return Ok();
             }
             catch (Exception ex)
             {

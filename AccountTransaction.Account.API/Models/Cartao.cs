@@ -16,6 +16,7 @@ namespace AccountTransaction.Account.API.Models
         public decimal Limite_Saldo { get; set; }
         public decimal Limite_Saldo_Disponivel { get; set; }
         public int? Ativo { get; set; }
+        [JsonIgnore]
         public int? Bloqueado { get; set; }
         [JsonIgnore]
         public Conta Conta { get; set; }

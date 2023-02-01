@@ -1,24 +1,64 @@
-﻿using AccountTransaction.Transaction.API.DTO.Request;
+﻿using AccountTransaction.Commom.Core.PagedList;
+using AccountTransaction.Transaction.API.Data.Repository;
+using AccountTransaction.Transaction.API.DTO.Request;
 using AccountTransaction.Transaction.API.Models;
 using AccountTransaction.Transaction.API.Services.Interface;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Principal;
 
 namespace AccountTransaction.Transaction.API.Services
 {
     public class TransactionService : Service, ITransactionService
     {
-        public Task<Transacao> Create(TransactionAddRequestDTO accountAddRequestDTO)
+        private readonly IRepository<Transacao> _repository;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="repository"></param>
+        public TransactionService(IRepository<Transacao> repository)
         {
-            throw new NotImplementedException();
+            _repository = repository;
         }
 
-        public Task<List<Transacao>> FindAll()
+        public async Task<Transacao> Create(TransactionAddRequestDTO accountAddRequestDTO)
         {
-            throw new NotImplementedException();
+            var transacao = new Transacao()
+            {
+                Numero_Cartao = long.Parse(accountAddRequestDTO.Numero_Cartao),
+                Id_Aprovacao = Guid.NewGuid(),
+                Valor_Transacao = decimal.Parse(accountAddRequestDTO.Valor_Transacao),
+                Data_Transacao = DateTime.Now,
+            };
+
+            var transacaoCreated = await _repository.Insert(transacao);
+            await _repository.CommitAsync();
+            return transacaoCreated;
         }
 
-        public Task<Transacao> FindByContaAndAgencia(TransactionBaseRequestDTO accountBaseRequestDTO)
+        public async Task<PagedResult<Transacao>> FindAll(TransactionFindAllRequestDTO transacao, int pagesize, int pageindex)
         {
-            throw new NotImplementedException();
+            var transactionQuery = _repository.Table.AsQueryable();
+
+            var transactions = await transactionQuery
+                .OrderBy(x => x.Id)
+                .Skip(pagesize * (pageindex - 1))
+                .Take(pagesize)
+                .ToListAsync();
+
+            return new PagedResult<Transacao>()
+            {
+                List = transactions,
+                TotalResults = transactions.Count,
+                PageIndex = pageindex,
+                PageSize = pagesize
+            };
+        }
+
+        public async Task<Transacao> FindById(Guid Id)
+        {
+            var trasaction = await _repository.Table.Where(conta => conta.Id == Id).FirstOrDefaultAsync();
+            return trasaction;
         }
 
         public Task<Transacao> Update(TransactionUpdateRequestDTO accountUpdateRequestDTO)

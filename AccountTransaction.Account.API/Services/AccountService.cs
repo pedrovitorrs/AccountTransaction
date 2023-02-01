@@ -109,9 +109,9 @@ namespace AccountTransaction.Account.API.Services
                 LogicalException("Conta e agência não encontrados.");
             }
 
-            account.Nome_Titular = accountUpdateRequestDTO.Nome_Titular;
-            account.Identificador_Titular = accountUpdateRequestDTO.Identificador_Titular;
-            account.Ativa = accountUpdateRequestDTO.Ativa;
+            account.Nome_Titular = accountUpdateRequestDTO.Nome_Titular ?? account.Nome_Titular;
+            account.Identificador_Titular = accountUpdateRequestDTO.Identificador_Titular ?? account.Identificador_Titular;
+            account.Ativa = accountUpdateRequestDTO.Ativa ?? account.Ativa;
 
             var contaUpdated = await _repository.Update(account);
             await _repository.CommitAsync();

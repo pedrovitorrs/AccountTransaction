@@ -51,7 +51,7 @@ namespace AccountTransaction.Account.API.Controllers
         }
 
         [HttpPost("accounts")]
-        public async Task<ActionResult<Conta>> Create([FromBody] AccountAddRequestDTO accountAddRequestDTO)
+        public async Task<ActionResult<Conta>> Add([FromBody] AccountAddRequestDTO accountAddRequestDTO)
         {
             try
             {
