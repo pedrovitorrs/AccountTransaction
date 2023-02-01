@@ -4,6 +4,7 @@ using AccountTransaction.Account.API.DTO.Request;
 using AccountTransaction.Account.API.Models;
 using AccountTransaction.Account.API.Services.Interface;
 using AccountTransaction.Account.API.Tipos;
+using AccountTransaction.Commom.Core.PagedList;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +32,7 @@ namespace AccountTransaction.Account.API.Services
                 LogicalException("Cartão já cadastrado.");
             }
 
-            if (await _accountService.FindByContaAndAgencia(new AccountBaseRequestDTO() { Numero_Agencia = cardAddRequestDTO.Numero_Agencia, Numero_Conta = cardAddRequestDTO .Numero_Conta }) == null )
+            if (await _accountService.FindByContaAndAgencia(new AccountBaseRequestDTO() { Numero_Agencia = cardAddRequestDTO.Numero_Agencia, Numero_Conta = cardAddRequestDTO.Numero_Conta }) == null)
             {
                 LogicalException("Não foi encontrado cadastro para a agencia e conta informada.");
             }
@@ -53,20 +54,36 @@ namespace AccountTransaction.Account.API.Services
             return accountCreated;
         }
 
-        public Task<Cartao> FindAll()
+        public async Task<PagedResult<Cartao>> FindAll(CardFindAllRequestDTO model, int pagesize, int pageindex)
         {
-            throw new NotImplementedException();
+            var cardQuery = _repository.Table.AsQueryable();
+
+            var cards = await cardQuery
+                .Where(a =>
+                    (model.Numero_Cartao == null || model.Numero_Cartao == a.Numero_Cartao) &&
+                    (model.CVC == null || model.CVC == a.CVC) &&
+                    (model.Numero_Conta == null || model.Numero_Conta == a.Numero_Conta) &&
+                    (model.Numero_Agencia == null || model.Numero_Agencia == a.Numero_Agencia) &&
+                    (model.Ativo == null || model.Ativo == a.Ativo)
+                )
+                .OrderBy(x => x.Numero_Conta)
+                .Skip(pagesize * (pageindex - 1))
+                .Take(pagesize)
+                .ToListAsync();
+
+            return new PagedResult<Cartao>()
+            {
+                List = cards,
+                TotalResults = cards.Count,
+                PageIndex = pageindex,
+                PageSize = pagesize
+            };
         }
 
         public async Task<Cartao> FindByNumeroCartao(CardBaseRequestDTO cardBaseRequestDTO)
         {
             var card = await _repository.Table.Where(conta => conta.Numero_Cartao == long.Parse(cardBaseRequestDTO.Numero_Cartao)).FirstOrDefaultAsync();
             return card;
-        }
-
-        public Task<List<Cartao>> Search(CardSearchRequestDTO conta)
-        {
-            throw new NotImplementedException();
         }
 
         public Task<Cartao> Update(CardUpdateRequestDTO accountUpdateRequestDTO)

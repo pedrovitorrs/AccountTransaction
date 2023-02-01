@@ -2,6 +2,7 @@
 using AccountTransaction.Account.API.Models;
 using AccountTransaction.Account.API.Services;
 using AccountTransaction.Account.API.Services.Interface;
+using AccountTransaction.Commom.Core.PagedList;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,11 +34,11 @@ namespace AccountTransaction.Account.API.Controllers
         }
 
         [HttpGet("cards")]
-        public async Task<ActionResult<List<Cartao>>> FindAll()
+        public async Task<ActionResult<PagedResult<Cartao>>> FindAll([FromQuery] CardFindAllRequestDTO accountSearchRequestDTO, [FromQuery] int pagesize = 10, [FromQuery] int page = 1)
         {
             try
             {
-                var cards = await _cardService.FindAll();
+                var cards = await _cardService.FindAll(accountSearchRequestDTO, pagesize, page);
                 if (cards == null) return NotFound();
                 return Ok(cards);
             }

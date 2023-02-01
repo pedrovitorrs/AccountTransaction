@@ -90,7 +90,7 @@ namespace AccountTransaction.Account.API.Services
             return new PagedResult<Conta>()
             {
                 List = accounts,
-                TotalResults = accounts.Count(),
+                TotalResults = accounts.Count,
                 PageIndex = pageindex,
                 PageSize = pagesize
             };
