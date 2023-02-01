@@ -1,4 +1,4 @@
-﻿using AccountTransaction.WebUI.Configuration.UserIdentity;
+﻿using AccountTransaction.Commom.Core.UserIdentity;
 using AccountTransaction.WebUI.Services.Handlers;
 using AccountTransaction.WebUI.Services.Implementation;
 using AccountTransaction.WebUI.Services.Interface;

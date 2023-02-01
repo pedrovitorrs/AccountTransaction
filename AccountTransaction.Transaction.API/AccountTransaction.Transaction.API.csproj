@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AccountTransaction.Commom.Core\AccountTransaction.Commom.Core.csproj" />
     <ProjectReference Include="..\AccountTransaction.MessageBus\AccountTransaction.MessageBus.csproj" />
   </ItemGroup>
 

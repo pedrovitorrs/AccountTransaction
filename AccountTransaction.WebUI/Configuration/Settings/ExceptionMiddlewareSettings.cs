@@ -5,9 +5,9 @@ using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Polly.CircuitBreaker;
 using Refit;
-using AccountTransaction.WebUI.Configuration.Exceptions;
 using AccountTransaction.WebUI.Services.Implementation;
 using AccountTransaction.WebUI.Services.Interface;
+using AccountTransaction.Commom.Core.Exceptions;
 
 namespace AccountTransaction.WebUI.Configuration.Settings
 {
@@ -63,10 +63,6 @@ namespace AccountTransaction.WebUI.Configuration.Settings
                 var httpStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), statusCode.ToString());
 
                 await HandleRequestExceptionAsync(httpContext, httpStatusCode);
-            }
-            catch (Exception ex)
-            {
-
             }
         }
 

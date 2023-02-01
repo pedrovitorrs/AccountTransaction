@@ -1,4 +1,4 @@
-﻿using AccountTransaction.WebUI.Configuration.Exceptions;
+﻿using AccountTransaction.Commom.Core.Exceptions;
 using AccountTransaction.WebUI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

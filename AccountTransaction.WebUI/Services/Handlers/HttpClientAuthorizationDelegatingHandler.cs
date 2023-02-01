@@ -1,4 +1,4 @@
-﻿using AccountTransaction.WebUI.Configuration.UserIdentity;
+﻿using AccountTransaction.Commom.Core.UserIdentity;
 using System.Net.Http.Headers;
 
 namespace AccountTransaction.WebUI.Services.Handlers

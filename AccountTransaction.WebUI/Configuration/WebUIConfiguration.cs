@@ -10,10 +10,6 @@ namespace AccountTransaction.WebUI.Configuration
         {
             services.AddControllersWithViews();
 
-            services.AddDataProtection()
-                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(@"/var/data_protection_keys/"))
-                .SetApplicationName("DevStoreEnterprise");
-
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders =

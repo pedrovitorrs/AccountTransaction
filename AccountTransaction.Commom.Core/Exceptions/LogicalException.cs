@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AccountTransaction.WebUI.Configuration.Exceptions
+namespace AccountTransaction.Commom.Core.Exceptions
 {
     public class LogicalException : Exception
     {

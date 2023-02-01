@@ -1,4 +1,4 @@
-﻿using AccountTransaction.WebUI.Configuration.UserIdentity;
+﻿using AccountTransaction.Commom.Core.UserIdentity;
 using AccountTransaction.WebUI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

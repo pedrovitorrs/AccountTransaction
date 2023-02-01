@@ -1,4 +1,4 @@
-﻿using AccountTransaction.Account.API.Configuration.Exceptions;
+﻿using AccountTransaction.Commom.Core.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 

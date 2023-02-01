@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
@@ -16,6 +17,7 @@ namespace AccountTransaction.Account.API.Models
         public decimal Limite_Saldo_Disponivel { get; set; }
         public int? Ativo { get; set; }
         public int? Bloqueado { get; set; }
+        [JsonIgnore]
         public Conta Conta { get; set; }
     }
 }

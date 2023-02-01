@@ -1,4 +1,4 @@
-﻿using AccountTransaction.Identity.API.Configuration.UserIdentity;
+﻿using AccountTransaction.Commom.Core.UserIdentity;
 
 namespace AccountTransaction.Identity.API.Configuration
 {

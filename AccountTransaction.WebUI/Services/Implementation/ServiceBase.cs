@@ -1,4 +1,4 @@
-﻿using AccountTransaction.WebUI.Configuration.Exceptions;
+﻿using AccountTransaction.Commom.Core.Exceptions;
 using System.Text.Json;
 using System.Text;
 using AccountTransaction.WebUI.DTO;

@@ -1,4 +1,4 @@
-﻿using AccountTransaction.Account.API.Configuration.Exceptions;
+﻿using AccountTransaction.Commom.Core.Exceptions;
 using AccountTransaction.Account.API.Services.Interface;
 
 namespace AccountTransaction.Account.API.Services

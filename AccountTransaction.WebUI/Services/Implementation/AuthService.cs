@@ -7,7 +7,7 @@ using AccountTransaction.WebUI.Configuration.Settings;
 using AccountTransaction.WebUI.Models;
 using AccountTransaction.WebUI.DTO;
 using AccountTransaction.WebUI.Services.Interface;
-using AccountTransaction.WebUI.Configuration.UserIdentity;
+using AccountTransaction.Commom.Core.UserIdentity;
 
 namespace AccountTransaction.WebUI.Services.Implementation
 {

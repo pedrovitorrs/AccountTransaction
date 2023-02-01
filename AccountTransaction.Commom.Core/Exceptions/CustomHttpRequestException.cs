@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace AccountTransaction.WebUI.Configuration.Exceptions
+namespace AccountTransaction.Commom.Core.Exceptions
 {
     public class CustomHttpRequestException : Exception
     {
