@@ -1,4 +1,5 @@
 ﻿using AccountTransaction.Commom.Core.UserIdentity;
+using Microsoft.AspNetCore.Localization;
 
 namespace AccountTransaction.Identity.API.Configuration
 {
@@ -6,6 +7,11 @@ namespace AccountTransaction.Identity.API.Configuration
     {
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new RequestCulture("pt-BR");
+            });
+
             services.AddControllers();
 
             services.AddScoped<IAspNetUser, AspNetUser>();

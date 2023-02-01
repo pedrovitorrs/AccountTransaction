@@ -1,6 +1,7 @@
 ﻿using AccountTransaction.WebUI.Configuration.Settings;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Localization;
 
 namespace AccountTransaction.WebUI.Configuration
 {
@@ -14,6 +15,11 @@ namespace AccountTransaction.WebUI.Configuration
             {
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new RequestCulture("pt-BR");
             });
 
             services.Configure<ApplicationSettings>(configuration);
