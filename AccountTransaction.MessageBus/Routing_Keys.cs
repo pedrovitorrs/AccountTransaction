@@ -9,6 +9,6 @@ namespace AccountTransaction.MessageBus
     public class Routing_Keys
     {
         public const string TRANSACTION_CREATED = "TRANSACTION_CREATED";
-        public const string TRANSACTION_UPDATED = "TRANSACTION_UPDATED";
+        public const string TRANSACTION_PROCESSED = "TRANSACTION_PROCESSED";
     }
 }

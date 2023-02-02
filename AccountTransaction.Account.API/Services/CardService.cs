@@ -27,7 +27,7 @@ namespace AccountTransaction.Account.API.Services
 
         public async Task<Cartao> Create(CardAddRequestDTO cardAddRequestDTO)
         {
-            if (await FindByNumeroCartao(cardAddRequestDTO) != null)
+            if (await FindByNumeroCartao(long.Parse(cardAddRequestDTO.Numero_Cartao)) != null)
             {
                 LogicalException("Cartão já cadastrado.");
             }
@@ -80,15 +80,15 @@ namespace AccountTransaction.Account.API.Services
             };
         }
 
-        public async Task<Cartao> FindByNumeroCartao(CardBaseRequestDTO cardBaseRequestDTO)
+        public async Task<Cartao> FindByNumeroCartao(long numeroCartao)
         {
-            var card = await _repository.Table.Where(conta => conta.Numero_Cartao == long.Parse(cardBaseRequestDTO.Numero_Cartao)).FirstOrDefaultAsync();
+            var card = await _repository.Table.Include(card => card.Conta).Where(conta => conta.Numero_Cartao == numeroCartao).FirstOrDefaultAsync();
             return card;
         }
 
         public async Task<Cartao> Update(CardUpdateRequestDTO accountUpdateRequestDTO)
         {
-            var card = await FindByNumeroCartao(accountUpdateRequestDTO);
+            var card = await FindByNumeroCartao(long.Parse(accountUpdateRequestDTO.Numero_Cartao));
             if (card == null)
             {
                 LogicalException("Conta e agência não encontrados.");

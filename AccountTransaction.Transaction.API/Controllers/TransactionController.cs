@@ -21,7 +21,7 @@ namespace AccountTransaction.Transaction.API.Controllers
         }
 
         [HttpGet("transactions/{id?}")]
-        public async Task<ActionResult<Transacao>> Find(TransactionBaseRequestDTO accountFindByIdRequestDTO)
+        public async Task<ActionResult<Transacao>> Find([FromRoute] TransactionBaseRequestDTO accountFindByIdRequestDTO)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace AccountTransaction.Transaction.API.Controllers
         }
 
         [HttpPost("transactions")]
-        public async Task<ActionResult<Transacao>> Add([FromBody] TransactionAddRequestDTO accountAddRequestDTO)
+        public async Task<ActionResult> Add([FromBody] TransactionAddRequestDTO accountAddRequestDTO)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace AccountTransaction.Transaction.API.Controllers
         }
 
         [HttpPut("transactions")]
-        public async Task<ActionResult<Transacao>> Update([FromBody] TransactionAddRequestDTO accountUpdateRequestDTO)
+        public async Task<ActionResult> Update([FromBody] TransactionAddRequestDTO accountUpdateRequestDTO)
         {
             try
             {

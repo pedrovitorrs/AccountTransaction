@@ -1,4 +1,9 @@
-﻿using AccountTransaction.Account.API.DTO.QueueMessage;
+﻿using AccountTransaction.Account.API.Data.Repository;
+using AccountTransaction.Account.API.DTO.QueueMessage;
+using AccountTransaction.Account.API.DTO.Request;
+using AccountTransaction.Account.API.Models;
+using AccountTransaction.Account.API.Services;
+using AccountTransaction.Account.API.Services.Interface;
 using AccountTransaction.MessageBus;
 using AccountTransaction.MessageBus.RabbitMQSender;
 using Microsoft.Extensions.Hosting;
@@ -19,16 +24,22 @@ namespace AccountTransaction.Account.API.MessageConsumer
     {
         private IRabbitMQMessageSender _rabbitMQMessageSender;
         private readonly RabbitMQMessageConfiguration _rabbitMQMessage;
+        private readonly ICardService _cardService;
         private IModel _channel;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="rabbitMQMessageSender"></param>
-        public RabbitMQTransactionConsumer(IRabbitMQMessageSender rabbitMQMessageSender, RabbitMQMessageConfiguration rabbitMQMessage)
+        public RabbitMQTransactionConsumer(
+            IRabbitMQMessageSender rabbitMQMessageSender, 
+            RabbitMQMessageConfiguration rabbitMQMessage,
+            ICardService cardService
+            )
         {
             _rabbitMQMessageSender = rabbitMQMessageSender;
             _rabbitMQMessage = rabbitMQMessage;
+            _cardService = cardService;
             if (_rabbitMQMessage.ConnectionExists())
             {
                 _channel = _rabbitMQMessage._connection.CreateModel();
@@ -66,6 +77,7 @@ namespace AccountTransaction.Account.API.MessageConsumer
             try
             {
 
+                // var card = await _cardService.FindByNumeroCartao(long.Parse(transactionAddMessageDTO.Numero_Cartao));
             }
             catch (Exception ex)
             {

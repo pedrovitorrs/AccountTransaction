@@ -21,7 +21,7 @@ namespace AccountTransaction.Account.API.Controllers
         }
 
         [HttpGet("accounts/{numero_agencia?}/{numero_conta?}")]
-        public async Task<ActionResult<Conta>> FindByContaAndAgencia(AccountFindByContaAndAgenciaRequestDTO accountFindByIdRequestDTO)
+        public async Task<ActionResult<Conta>> FindByContaAndAgencia([FromRoute] AccountFindByContaAndAgenciaRequestDTO accountFindByIdRequestDTO)
         {
             try
             {

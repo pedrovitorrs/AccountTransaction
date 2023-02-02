@@ -19,11 +19,11 @@ namespace AccountTransaction.Account.API.Controllers
         }
 
         [HttpGet("cards/{numero_cartao?}")]
-        public async Task<ActionResult<Cartao>> Find(CardBaseRequestDTO cardBaseRequestDTO)
+        public async Task<ActionResult<Cartao>> Find([FromRoute] CardBaseRequestDTO cardBaseRequestDTO)
         {
             try
             {
-                var card = await _cardService.FindByNumeroCartao(cardBaseRequestDTO);
+                var card = await _cardService.FindByNumeroCartao(long.Parse(cardBaseRequestDTO.Numero_Cartao));
                 if (card == null) return NotFound();
                 return Ok(card);
             }
