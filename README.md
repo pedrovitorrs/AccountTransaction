@@ -23,7 +23,7 @@ Para executar este container deverá ter o Docker instalado.
 O projeto já possui um docker-compose configurado, conseguirá executar o projeto somente executando o código:
 
 ```shell
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 ## Authors
