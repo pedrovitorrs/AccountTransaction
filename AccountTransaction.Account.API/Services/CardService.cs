@@ -94,8 +94,8 @@ namespace AccountTransaction.Account.API.Services
                 LogicalException("Conta e agência não encontrados.");
             }
 
-            card.Data_Vencimento = string.IsNullOrEmpty(accountUpdateRequestDTO.Data_Vencimento) ? new DateParse(accountUpdateRequestDTO.Data_Vencimento).DataParseada : card.Data_Vencimento;
-            card.Limite_Saldo = accountUpdateRequestDTO.Limite_Saldo ?? card.Limite_Saldo;
+            card.Data_Vencimento = string.IsNullOrEmpty(accountUpdateRequestDTO.Data_Vencimento) ? card.Data_Vencimento : new DateParse(accountUpdateRequestDTO.Data_Vencimento).DataParseada;
+            card.Limite_Saldo_Disponivel = accountUpdateRequestDTO.Limite_Saldo_Disponivel ?? card.Limite_Saldo_Disponivel;
             card.Ativo = accountUpdateRequestDTO.Ativo ?? card.Ativo;
             card.Bloqueado = accountUpdateRequestDTO.Ativo == (int)TipoSituacaoAtividade.ATIVA ? (int)TipoSituacaoAtividade.INATIVA : (int)TipoSituacaoAtividade.ATIVA;
 

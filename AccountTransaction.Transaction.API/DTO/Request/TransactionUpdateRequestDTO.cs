@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace AccountTransaction.Transaction.API.DTO.Request
 {
@@ -6,5 +7,7 @@ namespace AccountTransaction.Transaction.API.DTO.Request
     {
         [Required]
         public decimal Valor_Transacao { get; set; }
+        [JsonIgnore]
+        public Nullable<Guid> Id_Aprovacao { get; set; }
     }
 }

@@ -1,11 +1,8 @@
-﻿using AccountTransaction.Account.API.Data.Repository;
-using AccountTransaction.Account.API.DTO.QueueMessage;
-using AccountTransaction.Account.API.DTO.Request;
-using AccountTransaction.Account.API.Models;
-using AccountTransaction.Account.API.Services;
-using AccountTransaction.Account.API.Services.Interface;
-using AccountTransaction.MessageBus;
+﻿using AccountTransaction.MessageBus;
 using AccountTransaction.MessageBus.RabbitMQSender;
+using AccountTransaction.Transaction.API.DTO.QueueMessage;
+using AccountTransaction.Transaction.API.DTO.Request;
+using AccountTransaction.Transaction.API.Services.Interface;
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -18,32 +15,29 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-namespace AccountTransaction.Account.API.MessageConsumer
+namespace AccountTransaction.Transaction.API.MessageConsumer
 {
-    public class RabbitMQTransactionConsumer : BackgroundService
+    public class RabbitMQTransactionProcessedConsumer : BackgroundService
     {
-        private IRabbitMQMessageSender _rabbitMQMessageSender;
         private readonly RabbitMQMessageConfiguration _rabbitMQMessage;
-        private readonly ICardService _cardService;
+        private readonly ITransactionService _transactionService;
         private IModel _channel;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="rabbitMQMessageSender"></param>
-        public RabbitMQTransactionConsumer(
-            IRabbitMQMessageSender rabbitMQMessageSender, 
+        public RabbitMQTransactionProcessedConsumer(
             RabbitMQMessageConfiguration rabbitMQMessage,
-            ICardService cardService
+            IServiceCollection _services
             )
         {
-            _rabbitMQMessageSender = rabbitMQMessageSender;
             _rabbitMQMessage = rabbitMQMessage;
-            _cardService = cardService;
+            _transactionService = _services.BuildServiceProvider().GetRequiredService<ITransactionService>();
             if (_rabbitMQMessage.ConnectionExists())
             {
                 _channel = _rabbitMQMessage._connection.CreateModel();
-                _channel.QueueDeclare(queue: Routing_Keys.TRANSACTION_CREATED, false, false, false, arguments: null);
+                _channel.QueueDeclare(queue: Routing_Keys.TRANSACTION_PROCESSED, false, false, false, arguments: null);
             }
         }
 
@@ -63,7 +57,7 @@ namespace AccountTransaction.Account.API.MessageConsumer
                 ProcessTransaction(vo).GetAwaiter().GetResult();
                 _channel.BasicAck(evt.DeliveryTag, false);
             };
-            _channel.BasicConsume(Routing_Keys.TRANSACTION_CREATED, false, consumer);
+            _channel.BasicConsume(Routing_Keys.TRANSACTION_PROCESSED, false, consumer);
             return Task.CompletedTask;
         }
 
@@ -76,8 +70,11 @@ namespace AccountTransaction.Account.API.MessageConsumer
         {
             try
             {
-
-                // var card = await _cardService.FindByNumeroCartao(long.Parse(transactionAddMessageDTO.Numero_Cartao));
+                var accountCreated = await _transactionService.Create(new TransactionAddRequestDTO() 
+                { 
+                    Numero_Cartao = transactionAddMessageDTO.Numero_Cartao, 
+                    Valor_Transacao = transactionAddMessageDTO.Valor_Transacao 
+                });
             }
             catch (Exception ex)
             {
