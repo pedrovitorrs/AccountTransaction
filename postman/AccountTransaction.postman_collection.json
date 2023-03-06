@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "36e90b54-fb5d-4c3e-93d7-dd35cc765b10",
+		"name": "AccountTransaction",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numero_Conta\": 1645,\r\n  \"numero_Agencia\": 199,\r\n  \"nome_Titular\": \"teste da silva\",\r\n  \"identificador_Titular\": \"96963029083\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44317/accounts",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44317",
+							"path": [
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Identity",
+			"item": []
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numero_Cartao\": \"5149213630780401\",\r\n  \"valor_Transacao\": \"300\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44359/transactions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44359",
+							"path": [
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Card",
+			"item": [
+				{
+					"name": "Card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numero_Cartao\": \"5149213630780401\",\r\n  \"data_Vencimento\": \"02/26\",\r\n  \"cvc\": \"709\",\r\n  \"numero_Conta\": 1645,\r\n  \"numero_Agencia\": 199,\r\n  \"limite_Saldo\": 5000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44317/cards",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44317",
+							"path": [
+								"cards"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
