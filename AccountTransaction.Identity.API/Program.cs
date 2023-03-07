@@ -9,6 +9,8 @@ builder.Services.AddApiConfiguration(builder.Configuration);
 
 builder.Services.AddSwaggerConfiguration();
 
+builder.Services.AddOpenTelemetry(builder.Configuration);
+
 var app = builder.Build();
 
 DbMigrationConfiguration.EnsureSeedData(app).Wait();
