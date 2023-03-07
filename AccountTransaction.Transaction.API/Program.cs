@@ -11,6 +11,8 @@ builder.Services.AddSwaggerConfiguration();
 
 builder.Services.RegisterServices(builder.Configuration);
 
+builder.Services.AddOpenTelemetry(builder.Configuration);
+
 var app = builder.Build();
 
 DbMigrationHelpers.EnsureSeedData(app).Wait();

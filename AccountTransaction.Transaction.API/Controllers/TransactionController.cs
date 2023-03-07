@@ -13,9 +13,11 @@ namespace AccountTransaction.Transaction.API.Controllers
     {
         private readonly ITransactionService _transactionService;
         private readonly IRabbitMQMessageSender _rabbitMessageSender;
+        private readonly ILogger<TransactionController> _logger;
 
-        public TransactionController(ITransactionService transactionService, IRabbitMQMessageSender rabbitMessageSender)
+        public TransactionController(ITransactionService transactionService, IRabbitMQMessageSender rabbitMessageSender, ILogger<TransactionController> logger)
         {
+            _logger = logger;
             _transactionService = transactionService;
             _rabbitMessageSender = rabbitMessageSender;
         }
