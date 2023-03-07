@@ -9,7 +9,7 @@
 			"name": "Account",
 			"item": [
 				{
-					"name": "Account",
+					"name": "accounts",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -40,13 +40,44 @@
 		},
 		{
 			"name": "Identity",
-			"item": []
+			"item": [
+				{
+					"name": "new-account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"teste da silva\",\r\n  \"socialNumber\": \"30065209044\",\r\n  \"email\": \"admin@devscansados.com\",\r\n  \"password\": \"12345678\",\r\n  \"confirmPassword\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5420/api/identity/new-account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5420",
+							"path": [
+								"api",
+								"identity",
+								"new-account"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Transaction",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "transactions",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -60,12 +91,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:44359/transactions",
-							"protocol": "https",
+							"raw": "http://localhost:5480/transactions",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "44359",
+							"port": "5480",
 							"path": [
 								"transactions"
 							]
@@ -79,7 +110,7 @@
 			"name": "Card",
 			"item": [
 				{
-					"name": "Card",
+					"name": "cards",
 					"request": {
 						"method": "POST",
 						"header": [],
