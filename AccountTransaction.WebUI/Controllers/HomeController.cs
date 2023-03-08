@@ -1,4 +1,4 @@
-﻿using AccountTransaction.WebUI.Models;
+﻿using AccountTransaction.WebUI.ViewModel.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

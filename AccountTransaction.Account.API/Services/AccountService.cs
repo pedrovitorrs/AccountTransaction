@@ -72,7 +72,7 @@ namespace AccountTransaction.Account.API.Services
         {
             var accountsQuery = _repository.Table.AsQueryable();
 
-            var accounts = await accountsQuery
+            var accounts = accountsQuery
                 .Include(c => c.Cartoes)
                 .Where(a =>
                     (string.IsNullOrEmpty(model.Tipo_Conta) || a.Tipo_Conta == model.Tipo_Conta) &&
@@ -81,16 +81,17 @@ namespace AccountTransaction.Account.API.Services
                     (model.Ativa == null || model.Ativa == a.Ativa) &&
                     (string.IsNullOrEmpty(model.Identificador_Titular) || a.Identificador_Titular.ToLower().Contains(model.Identificador_Titular.ToLower())) &&
                     (string.IsNullOrEmpty(model.Nome_Titular) || a.Nome_Titular.ToLower().Contains(model.Nome_Titular.ToLower()))
-                )
-                .OrderBy(x => x.Numero_Conta)
+                );
+
+            var listAccounts = await accounts.OrderBy(x => x.Numero_Conta)
                 .Skip(pagesize * (pageindex - 1))
                 .Take(pagesize)
                 .ToListAsync();
 
             return new PagedResult<Conta>()
             {
-                List = accounts,
-                TotalResults = accounts.Count,
+                List = listAccounts,
+                TotalResults = accounts.Count(),
                 PageIndex = pageindex,
                 PageSize = pagesize
             };

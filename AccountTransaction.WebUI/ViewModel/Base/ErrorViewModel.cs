@@ -1,4 +1,4 @@
-namespace AccountTransaction.WebUI.Models
+namespace AccountTransaction.WebUI.ViewModel.Base
 {
     public class ErrorViewModel
     {

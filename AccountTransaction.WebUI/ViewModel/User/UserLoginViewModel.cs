@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace AccountTransaction.WebUI.Models
+namespace AccountTransaction.WebUI.ViewModel.User
 {
     public class UserLoginViewModel
     {

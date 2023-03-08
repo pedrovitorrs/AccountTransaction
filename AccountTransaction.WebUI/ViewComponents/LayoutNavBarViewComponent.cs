@@ -1,5 +1,5 @@
 ﻿using AccountTransaction.Commom.Core.UserIdentity;
-using AccountTransaction.WebUI.Models;
+using AccountTransaction.WebUI.ViewModel.Base;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

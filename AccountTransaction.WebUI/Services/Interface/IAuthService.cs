@@ -1,5 +1,5 @@
 ﻿using AccountTransaction.WebUI.DTO;
-using AccountTransaction.WebUI.Models;
+using AccountTransaction.WebUI.ViewModel.User;
 
 namespace AccountTransaction.WebUI.Services.Interface
 {

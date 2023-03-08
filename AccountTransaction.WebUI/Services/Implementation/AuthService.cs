@@ -4,10 +4,10 @@ using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using AccountTransaction.WebUI.Configuration.Settings;
-using AccountTransaction.WebUI.Models;
 using AccountTransaction.WebUI.DTO;
 using AccountTransaction.WebUI.Services.Interface;
 using AccountTransaction.Commom.Core.UserIdentity;
+using AccountTransaction.WebUI.ViewModel.User;
 
 namespace AccountTransaction.WebUI.Services.Implementation
 {

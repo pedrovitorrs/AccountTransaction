@@ -1,5 +1,4 @@
-﻿using AccountTransaction.WebUI.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace AccountTransaction.WebUI.DTO
 {

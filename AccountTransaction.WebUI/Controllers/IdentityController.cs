@@ -1,5 +1,5 @@
-﻿using AccountTransaction.WebUI.Models;
-using AccountTransaction.WebUI.Services.Interface;
+﻿using AccountTransaction.WebUI.Services.Interface;
+using AccountTransaction.WebUI.ViewModel.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountTransaction.WebUI.Controllers
@@ -34,7 +34,6 @@ namespace AccountTransaction.WebUI.Controllers
             return View(loginViewModel);
         }
 
-
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(UserLoginViewModel userLogin, string returnUrl = null)
@@ -59,6 +58,14 @@ namespace AccountTransaction.WebUI.Controllers
         public IActionResult Register()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _authService.Logout();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

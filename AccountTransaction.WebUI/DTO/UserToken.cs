@@ -1,6 +1,4 @@
-﻿using AccountTransaction.WebUI.Models;
-
-namespace AccountTransaction.WebUI.DTO
+﻿namespace AccountTransaction.WebUI.DTO
 {
     public class UserToken
     {

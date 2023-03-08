@@ -41,7 +41,7 @@ namespace AccountTransaction.WebUI.Configuration.Settings
             {
                 await HandleRequestExceptionAsync(httpContext, ex.StatusCode);
             }
-            catch (BrokenCircuitException)
+            catch (BrokenCircuitException ex)
             {
                 HandleCircuitBreakerExceptionAsync(httpContext);
             }
