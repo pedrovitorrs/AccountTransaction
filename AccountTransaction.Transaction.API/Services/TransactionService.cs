@@ -36,23 +36,13 @@ namespace AccountTransaction.Transaction.API.Services
             return transacaoCreated;
         }
 
-        public async Task<PagedResult<Transacao>> FindAll(TransactionFindAllRequestDTO transacao, int pagesize, int pageindex)
+        public async Task<List<Transacao>> FindAll(TransactionFindAllRequestDTO transacao)
         {
             var transactionQuery = _repository.Table.AsQueryable();
 
-            var transactions = await transactionQuery
+            return await transactionQuery
                 .OrderBy(x => x.Id)
-                .Skip(pagesize * (pageindex - 1))
-                .Take(pagesize)
                 .ToListAsync();
-
-            return new PagedResult<Transacao>()
-            {
-                List = transactions,
-                TotalResults = transactions.Count,
-                PageIndex = pageindex,
-                PageSize = pagesize
-            };
         }
 
         public async Task<Transacao> FindById(Guid Id)

@@ -1,4 +1,5 @@
-﻿using AccountTransaction.WebUI.ViewModel.Base;
+﻿using AccountTransaction.WebUI.Services.Interface;
+using AccountTransaction.WebUI.ViewModel.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,10 +10,12 @@ namespace AccountTransaction.WebUI.Controllers
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ITransactionService _transactionService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ITransactionService transactionService)
         {
             _logger = logger;
+            _transactionService = transactionService;
         }
 
         public IActionResult Index()
@@ -29,6 +32,14 @@ namespace AccountTransaction.WebUI.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        [Route("home/transactions")]
+        public async Task<IActionResult> Transactions()
+        {
+            var Response = await _transactionService.ListAll();
+            return Json(Response);
         }
     }
 }

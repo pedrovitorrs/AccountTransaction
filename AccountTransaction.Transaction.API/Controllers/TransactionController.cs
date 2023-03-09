@@ -38,11 +38,11 @@ namespace AccountTransaction.Transaction.API.Controllers
         }
 
         [HttpGet("transactions")]
-        public async Task<ActionResult<PagedResult<Transacao>>> FindAll([FromQuery] TransactionFindAllRequestDTO transactionFindAllRequestDTO, [FromQuery] int pagesize = 10, [FromQuery] int page = 1)
+        public async Task<ActionResult<List<Transacao>>> FindAll([FromQuery] TransactionFindAllRequestDTO transactionFindAllRequestDTO)
         {
             try
             {
-                var accounts = await _transactionService.FindAll(transactionFindAllRequestDTO, pagesize, page);
+                var accounts = await _transactionService.FindAll(transactionFindAllRequestDTO);
                 if (accounts == null) return NotFound();
                 return Ok(accounts);
             }

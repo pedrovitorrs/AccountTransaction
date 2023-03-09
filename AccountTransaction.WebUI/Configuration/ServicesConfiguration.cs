@@ -28,6 +28,11 @@ namespace AccountTransaction.WebUI.Configuration
                 .AddPolicyHandler(PollyExtensions.WaitAndRetry())
                 .AddTransientHttpErrorPolicy(
                     p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+
+            services.AddHttpClient<ITransactionService, TransactionService>()
+                .AddPolicyHandler(PollyExtensions.WaitAndRetry())
+                .AddTransientHttpErrorPolicy(
+                    p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
             #endregion
         }
 

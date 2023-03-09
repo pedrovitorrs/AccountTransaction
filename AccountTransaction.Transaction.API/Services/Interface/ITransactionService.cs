@@ -8,7 +8,7 @@ namespace AccountTransaction.Transaction.API.Services.Interface
     {
         Task<Transacao> Create(TransactionAddRequestDTO accountAddRequestDTO);
         Task<Transacao> FindById(Guid Id);
-        Task<PagedResult<Transacao>> FindAll(TransactionFindAllRequestDTO transacao, int pagesize, int pageindex);
+        Task<List<Transacao>> FindAll(TransactionFindAllRequestDTO transacao);
         Task<Transacao> Update(TransactionUpdateRequestDTO accountUpdateRequestDTO);
     }
 }
