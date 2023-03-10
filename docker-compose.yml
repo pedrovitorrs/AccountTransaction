@@ -8,7 +8,7 @@ services:
             - 5400:80
         build:
             context: .
-            dockerfile: ./AccountTransaction.WebUI/Dockerfile
+            dockerfile: ./web/AccountTransaction.WebUI/Dockerfile
         restart: always            
         environment:
             ASPNETCORE_ENVIRONMENT: Docker
@@ -52,7 +52,7 @@ services:
             - 5420:80
         build: 
             context: .
-            dockerfile: ./AccountTransaction.Identity.API/Dockerfile  
+            dockerfile: ./services/Identity/AccountTransaction.Identity.API/Dockerfile  
         restart: always
         environment: 
             ASPNETCORE_ENVIRONMENT: Docker
@@ -86,7 +86,7 @@ services:
             - 5440:80
         build: 
             context: .
-            dockerfile: ./AccountTransaction.Account.API/Dockerfile  
+            dockerfile: ./services/Account/AccountTransaction.Account.API/Dockerfile  
         restart: always
         environment: 
             ASPNETCORE_ENVIRONMENT: Docker
@@ -120,7 +120,7 @@ services:
             - 5480:80
         build: 
             context: .
-            dockerfile: ./AccountTransaction.Transaction.API/Dockerfile  
+            dockerfile: ./services/Transaction/AccountTransaction.Transaction.API/Dockerfile
         restart: always
         environment: 
             ASPNETCORE_ENVIRONMENT: Docker
